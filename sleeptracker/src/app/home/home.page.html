@@ -1,20 +1,63 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Sleep Tracker</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <!-- Let's us enter date and time -->
+  <h2>Log overnight sleep</h2>
+
+  <p>
+    <label>
+      Bedtime
+      <input type="datetime-local" #bedtime>
+    </label>
+  </p>
+
+  <p>
+    <label>
+      Wake-up time
+      <input type="datetime-local" #wakeTime>
+    </label>
+  </p>
+
+  <button type="button" (click)="saveOvernight(bedtime.value, wakeTime.value)">
+    Save overnight sleep
+  </button>
+
+  <p role="status">{{ overnightMessage }}</p>
+
+  <h2>Log daytime sleepiness</h2>
+
+  <label>
+    How sleepy do you feel right now?
+    <select #sleepiness>
+      <option value="">Choose a rating</option>
+      @for (description of sleepinessLevels; track $index) {
+        @if (description) {
+          <option [value]="$index">{{ $index }} — {{ description }}</option>
+        }
+      }
+    </select>
+  </label>
+
+  <button type="button" (click)="saveSleepiness(sleepiness.value)">
+    Save sleepiness
+  </button>
+
+  <p role="status">{{ sleepinessMessage }}</p>
+
+  <h1>Sleep history</h1>
+
+  <ul>
+    <!-- @for creates one list item per entry -->
+    @for (entry of allSleepData; track entry.id) {
+      <li>
+        <strong>{{ entry.dateString() }}</strong>
+        <p>{{ entry.summaryString() }}</p>
+      </li>
+    }
+  </ul>
 </ion-content>

@@ -21,6 +21,10 @@ export class StanfordSleepinessData extends SleepData {
 		this.loggedAt = loggedAt;
 	}
 
+	override dateString(): string {
+		return `Sleepiness check-in: ${this.loggedAt.toLocaleString()}`;
+	}
+
 	override summaryString():string {
 		return this.loggedValue + ": " + StanfordSleepinessData.ScaleValues[this.loggedValue];
 	}

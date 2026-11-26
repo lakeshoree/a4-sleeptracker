@@ -18,7 +18,13 @@ export class OvernightSleepData extends SleepData {
 		var difference_ms = sleepEnd_ms - sleepStart_ms;
 		    
 		// Convert to hours and minutes
-		return Math.floor(difference_ms / (1000*60*60)) + " hours, " + Math.floor(difference_ms / (1000*60) % 60) + " minutes.";
+		// Showing the formatted bedtime and wake-up time in history 
+		const hours = Math.floor(difference_ms / (1000 * 60 * 60));
+		const minutes = Math.floor(difference_ms / (1000 * 60)) % 60;
+
+		return `Bedtime: ${this.sleepStart.toLocaleString()} · ` +
+			   `Wake-up: ${this.sleepEnd.toLocaleString()} · ` +
+			   `Duration: ${hours}h ${minutes}m`;
 	}
 
 	override dateString():string {
