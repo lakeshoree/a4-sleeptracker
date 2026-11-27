@@ -1,4 +1,4 @@
---Readme document for *LOKESH SHARMA*, *lokeshs1@uci.edu*, *84079406*--
+--Readme document for LOKESH SHARMA, lokeshs1@uci.edu, 84079406--
 
 1. How many assignment points do you believe you completed (replace the *'s with your numbers)?
 
@@ -17,20 +17,17 @@ This assignment took me two entire days of work, splititng up the functional des
 
 3. What online resources did you consult when completing this assignment? (list specific URLs)
 
-I refered to a few online resources for understanding Ionic Storage to help with the data logging
-and also baisc ionic themeing.
+I refered to a few online resources for understanding Ionic Storage to help with the data logging and also basic ionic theming.
 
 Links:
 https://ionicframework.com/docs/theming/basics
 https://ionicframework.com/docs/angular/storage
 
-For the desing inspiration I took a look at Apples documentation to see how they format their menus, and liked the liquid class look of the menus and 
-wanted to apply that as an ombre effect inside to bubbles.
+For the desing inspiration I took a look at Apples documentation to see how they format their menus, and liked the liquid class look of the menus and wanted to apply that as an ombre effect inside to bubbles.
 
 https://developer.apple.com/design/human-interface-guidelines/menus
 
-I also took inspiration from this color palette for the purples of evoking a sleep. This palette made sense because online research showed me that these
-low-glare palettes reduce nighttime eye strain. 
+I also took inspiration from this color palette for the purples of evoking a sleep. This palette made sense because online research showed me that these low-glare palettes reduce nighttime eye strain. 
 
 https://www.color-hex.com/color-palette/109835
 
@@ -52,8 +49,7 @@ ionic serve
 
 6. Did you design your app with a particular type of user in mind? If so, whom?
 
-There was no one specific user in mind, but the idea was that there it was a no gimicks, "limited brain power required" to use app. Few words, even fewer buttons,
-you simply tap or type (for time) and hit save.
+There was no one specific user in mind, but the idea was that there it was a no gimicks, "limited brain power required" to use app. Few words, even fewer buttons, you simply tap or type (for time) and hit save.
 
 7. Did you design your app specifically for iOS or Android, or both?
 
@@ -74,8 +70,7 @@ At the bottom I created a history tab like the tabs for overnight and daytime. W
 
 11. Which feature choose--using a native device resource, backing up logged data, or both?
 
-I chose to back up the logged data using Ionic Storage to save both the overnight sleep entries and daytime sleepiness locally. I made sure that the entires appeared
-in the history even after refreshing the page and reopening the app.
+I chose to back up the logged data using Ionic Storage to save both the overnight sleep entries and daytime sleepiness locally. I made sure that the entires appeared in the history even after refreshing the page and reopening the app.
 
 12. If you used a native device resource, what feature did you add? How does this feature change the app's experience for a user?
 
@@ -83,11 +78,8 @@ N/A I chose the data backup option and used Ionic Storage for saving locally
 
 13. If you backed up logged data, where does it back up to?
 
-The app saves the logged data from overnigth and daytime sleepiness ratings locally in the browser using Ionic Storage. As long as its opened on the same browser and device
-it loads the data.
+The app saves the logged data from overnight and daytime sleepiness ratings locally in the browser using Ionic Storage. As long as its opened on the same browser and device it loads the data.
 
 14. How does your app implement or follow principles of good mobile design?
 
-The main ways that my app follows principles of good mobile design is through ease of use and visual simplicity. Something like a sleep tracker, used inherently when the user
-is tired or not operating at full efficiency. Therefore all design elements are simple and easy to read. Such as a simple button row for numbers/levels of sleepiness and
-calendar for selecting dates.
+The main ways that my app follows principles of good mobile design is through ease of use and visual simplicity. Something like a sleep tracker, used inherently when the user is tired or not operating at full efficiency. Therefore all design elements are simple and easy to read. Such as a simple button row for numbers/levels of sleepiness and calendar for selecting dates.
