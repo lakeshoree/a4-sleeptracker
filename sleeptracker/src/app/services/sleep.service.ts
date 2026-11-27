@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SleepData } from '../data/sleep-data';
 import { OvernightSleepData } from '../data/overnight-sleep-data';
 import { StanfordSleepinessData } from '../data/stanford-sleepiness-data';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,15 @@ export class SleepService {
 	public static AllSleepData:SleepData[] = [];
 	public static AllOvernightData:OvernightSleepData[] = [];
 	public static AllSleepinessData:StanfordSleepinessData[] = [];
+	private storageReady: Promise<void>;
 
-	constructor() {
-		if(SleepService.LoadDefaultData) {
+	constructor(private storage: Storage) {
+		if (SleepService.LoadDefaultData) {
 			this.addDefaultData();
-		SleepService.LoadDefaultData = false;
-	}
+			SleepService.LoadDefaultData = false;
+		}
+
+		this.storageReady = this.loadSavedCheckIns();
 	}
 
 	private addDefaultData() {
@@ -47,4 +51,52 @@ export class SleepService {
 		SleepService.AllSleepData.push(sleepData);
 		SleepService.AllSleepinessData.push(sleepData);
 	}
+
+	private async loadSavedCheckIns(): Promise<void> {
+		await this.storage.create();
+
+		await this.storage.forEach((record, key) => {
+			if (key.startsWith('sleepiness:')) {
+				const entry = new StanfordSleepinessData(
+					record.rating,
+					new Date(record.loggedAt)
+				);
+				entry.id = key.slice('sleepiness:'.length);
+				this.logSleepinessData(entry);
+			}
+			else if (key.startsWith('overnight:')) {
+				const entry = new OvernightSleepData(
+					new Date(record.start),
+					new Date(record.end)
+				);
+				entry.id = key.slice('overnight:'.length);
+				this.logOvernightData(entry);
+			}
+		});
+	}
+
+	public async saveSleepinessCheckIn(rating: number): Promise<void> {
+		const entry = new StanfordSleepinessData(rating);
+		await this.storageReady;
+
+		await this.storage.set(`sleepiness:${entry.id}`, {
+			rating,
+			loggedAt: entry.loggedAt.toISOString()
+		});
+
+		this.logSleepinessData(entry);
+	}
+
+	public async saveOvernightEntry(start: Date, end: Date): Promise<void> {
+		const entry = new OvernightSleepData(start, end);
+		await this.storageReady;
+
+		await this.storage.set(`overnight:${entry.id}`, {
+			start: start.toISOString(),
+			end: end.toISOString()
+		});
+
+		this.logOvernightData(entry);
+	}
+
 }

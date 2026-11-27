@@ -1,63 +1,137 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Sleep Tracker</ion-title>
+    <ion-title>Sleep Diary</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
 
   <!-- Let's us enter date and time -->
-  <h2>Log overnight sleep</h2>
+  <section class="logging-form" [hidden]="activeLog !== 'overnight'">
+    <h2>Log overnight sleep</h2>
 
-  <p>
-    <label>
-      Bedtime
-      <input type="datetime-local" #bedtime>
-    </label>
-  </p>
+    <p>
+      <label>
+        Bedtime
+        <input type="datetime-local" #bedtime
+               (input)="updateDurationPreview(bedtime.value, wakeTime.value)">
+      </label>
+    </p>
 
-  <p>
-    <label>
-      Wake-up time
-      <input type="datetime-local" #wakeTime>
-    </label>
-  </p>
+    <p>
+      <label>
+        Wake-up time
+        <input type="datetime-local" #wakeTime
+               (input)="updateDurationPreview(bedtime.value, wakeTime.value)">
+      </label>
+    </p>
 
-  <button type="button" (click)="saveOvernight(bedtime.value, wakeTime.value)">
-    Save overnight sleep
-  </button>
+    <p aria-live="polite" [class.feedback-error]="durationPreviewInvalid">{{ durationPreview }}</p>
 
-  <p role="status">{{ overnightMessage }}</p>
+    <ion-button expand="block" type="button"
+                (click)="saveOvernight(bedtime.value, wakeTime.value)">
+      Save overnight sleep
+    </ion-button>
 
-  <h2>Log daytime sleepiness</h2>
+    <!-- Good UI for not having to manually remove date and time information -->
+    <button
+      type="button"
+      [disabled]="!bedtime.value && !wakeTime.value"
+      (click)="bedtime.value = ''; wakeTime.value = ''; durationPreview = ''; durationPreviewInvalid = false; overnightMessage = ''; overnightStatus = ''">
+      Clear
+    </button>
 
-  <label>
-    How sleepy do you feel right now?
-    <select #sleepiness>
-      <option value="">Choose a rating</option>
-      @for (description of sleepinessLevels; track $index) {
-        @if (description) {
-          <option [value]="$index">{{ $index }} — {{ description }}</option>
+    <p role="status" class="feedback"
+       [class.feedback-error]="overnightStatus === 'error'"
+       [class.feedback-success]="overnightStatus === 'success'">{{ overnightMessage }}</p>
+  </section>
+
+  <section class="logging-form" [hidden]="activeLog !== 'sleepiness'">
+    <h2>Log daytime sleepiness</h2>
+
+    <fieldset class="rating-scale">
+      <legend>How sleepy do you feel right now?</legend>
+      <div class="rating-options">
+        @for (description of sleepinessLevels; track $index) {
+          @if (description) {
+            <label class="rating-option">
+              <input type="radio" name="sleepiness" [value]="$index"
+                     [checked]="sleepinessPreview === $index"
+                     [attr.aria-label]="$index + ' — ' + description"
+                     (change)="previewSleepiness($index.toString())">
+              <span>{{ $index }}</span>
+            </label>
+          }
         }
+      </div>
+    </fieldset>
+
+    <p class="rating-description" aria-live="polite">{{ sleepinessLevels[sleepinessPreview] || 'Choose a level from 1 (alert) to 7 (very sleepy).' }}</p>
+
+    <ion-button expand="block" type="button"
+                (click)="saveSleepiness(sleepinessPreview.toString())">
+      Save sleepiness
+    </ion-button>
+
+    <p role="status" class="feedback"
+       [class.feedback-error]="sleepinessStatus === 'error'"
+       [class.feedback-success]="sleepinessStatus === 'success'">{{ sleepinessMessage }}</p>
+  </section>
+
+  <section [hidden]="activeLog !== 'history'">
+    <h1>Sleep history</h1>
+
+    <ul class="history-list" role="list">
+      <!-- @for creates one list item per entry -->
+      @for (entry of allSleepData; track entry.id) {
+        @let recordType = getRecordType(entry);
+        <li>
+          <span class="record-type">
+            <ion-icon [name]="recordType === 'Overnight' ? 'moon-outline' : recordType === 'Daytime' ? 'sunny-outline' : 'list-outline'"
+                      aria-hidden="true"></ion-icon>
+            {{ recordType }}
+          </span>
+          <strong>{{ entry.dateString() }}</strong>
+          @if (getOvernightEntry(entry); as overnight) {
+            <strong class="history-duration">{{ overnight.durationString() }}</strong>
+            <p class="overnight-times">
+              Bedtime: {{ overnight.bedtimeString() }}<br>
+              Wake-up: {{ overnight.wakeTimeString() }}
+            </p>
+          } @else {
+            <p>{{ entry.summaryString() }}</p>
+          }
+        </li>
       }
-    </select>
-  </label>
-
-  <button type="button" (click)="saveSleepiness(sleepiness.value)">
-    Save sleepiness
-  </button>
-
-  <p role="status">{{ sleepinessMessage }}</p>
-
-  <h1>Sleep history</h1>
-
-  <ul>
-    <!-- @for creates one list item per entry -->
-    @for (entry of allSleepData; track entry.id) {
-      <li>
-        <strong>{{ entry.dateString() }}</strong>
-        <p>{{ entry.summaryString() }}</p>
-      </li>
-    }
-  </ul>
+    </ul>
+  </section>
 </ion-content>
+
+<!-- Bottom navigation -->
+<ion-footer>
+  <ion-toolbar>
+    <nav class="bottom-navigation" aria-label="Sleep diary">
+      <button type="button"
+              [class.selected]="activeLog === 'overnight'"
+              [attr.aria-current]="activeLog === 'overnight' ? 'page' : null"
+              (click)="activeLog = 'overnight'">
+        <ion-icon name="moon-outline" aria-hidden="true"></ion-icon>
+        <span>Overnight</span>
+      </button>
+      <button type="button"
+              [class.selected]="activeLog === 'sleepiness'"
+              [attr.aria-current]="activeLog === 'sleepiness' ? 'page' : null"
+              (click)="activeLog = 'sleepiness'">
+        <ion-icon name="sunny-outline" aria-hidden="true"></ion-icon>
+        <span>Daytime</span>
+      </button>
+      <button type="button"
+              [class.selected]="activeLog === 'history'"
+              [attr.aria-current]="activeLog === 'history' ? 'page' : null"
+              (click)="activeLog = 'history'">
+        <ion-icon name="list-outline" aria-hidden="true"></ion-icon>
+        <span>History</span>
+      </button>
+    </nav>
+  </ion-toolbar>
+</ion-footer>

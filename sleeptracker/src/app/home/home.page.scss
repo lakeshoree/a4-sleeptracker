@@ -25,3 +25,368 @@
 #container a {
   text-decoration: none;
 }
+
+:host {
+  color-scheme: light;
+  background: var(--diary-background);
+  --diary-background: var(--diary-day-background);
+  --diary-surface: var(--diary-day-surface);
+  --diary-text: var(--diary-day-text);
+  --diary-muted: var(--diary-day-muted);
+  --diary-border: var(--diary-day-border);
+  --diary-accent: var(--ion-color-primary);
+  --diary-accent-text: var(--ion-color-primary-contrast);
+  --diary-error: var(--diary-day-error);
+  --diary-success: var(--diary-day-success);
+}
+
+:host(.overnight-theme) {
+  color-scheme: dark;
+  --diary-background: var(--diary-night-background);
+  --diary-surface: var(--diary-night-surface);
+  --diary-text: var(--diary-night-text);
+  --diary-muted: var(--diary-night-muted);
+  --diary-border: var(--diary-night-border);
+  --diary-accent: var(--diary-night-accent);
+  --diary-accent-text: var(--diary-night-surface);
+  --diary-error: var(--diary-night-error);
+  --diary-success: var(--diary-night-success);
+}
+
+@for $level from 1 through 7 {
+  :host([data-sleepiness-level='#{$level}']) {
+    --diary-background: var(--diary-level-#{$level}-background);
+  }
+}
+
+ion-content {
+  --background: transparent;
+  --color: var(--diary-text);
+}
+
+ion-header,
+ion-footer {
+  box-shadow: none;
+}
+
+ion-toolbar {
+  --background: transparent;
+  --color: var(--diary-text);
+  --border-width: 0;
+}
+
+ion-button {
+  --background: var(--diary-accent);
+  --background-hover: var(--diary-accent);
+  --background-activated: var(--diary-accent);
+  --color: var(--diary-accent-text);
+}
+
+.logging-form input,
+.logging-form select {
+  background: var(--diary-surface);
+  color: var(--diary-text);
+  border: 1px solid var(--diary-border);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.logging-form > button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+ion-content::part(scroll) {
+  display: flex;
+  flex-direction: column;
+}
+
+.logging-form {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+  padding-bottom: 48px;
+  box-sizing: border-box;
+}
+
+.logging-form:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logging-form > * {
+  margin: 0;
+}
+
+.logging-form > p:empty {
+  display: none;
+}
+
+.logging-form h2 {
+  margin-bottom: 12px;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 600;
+  text-align: center;
+}
+
+.logging-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.logging-form > button {
+  align-self: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--diary-night-accent);
+  font: inherit;
+  font-size: 85%;
+  cursor: pointer;
+}
+
+.logging-form > button:focus-visible {
+  outline: 2px solid var(--diary-accent);
+  outline-offset: 2px;
+}
+
+.feedback {
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.feedback-error {
+  color: var(--diary-error);
+}
+
+.feedback-success {
+  color: var(--diary-success);
+}
+
+.logging-form input,
+.logging-form select {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.history-list {
+  list-style: none;
+  margin: 16px 0;
+  padding: 0 16px;
+  background: var(--diary-surface);
+  border-radius: 16px;
+}
+
+.history-list li {
+  padding: 20px 0;
+  overflow-wrap: anywhere;
+}
+
+.history-list li + li {
+  border-top: 1px solid var(--diary-border);
+}
+
+.history-list strong {
+  display: block;
+  color: var(--diary-muted);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.record-type {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: var(--diary-accent);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.record-type ion-icon {
+  font-size: 16px;
+}
+
+.history-list p {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.history-list .history-duration {
+  margin-top: 12px;
+  color: var(--diary-text);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.history-list .overnight-times {
+  color: var(--diary-muted);
+  font-size: 14px;
+}
+
+.rating-scale {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.rating-scale legend {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 0;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.rating-options {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.rating-option {
+  position: relative;
+  justify-content: center;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.rating-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  opacity: 0;
+}
+
+.rating-option span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 44px;
+  aspect-ratio: 1;
+  box-sizing: border-box;
+  border: 1px solid var(--diary-border);
+  border-radius: 50%;
+  background: var(--diary-surface);
+  color: var(--diary-text);
+  font-weight: 600;
+}
+
+.rating-option input:checked + span {
+  background: var(--diary-accent);
+  color: var(--diary-accent-text);
+  border-color: var(--diary-accent);
+}
+
+.rating-option input:focus-visible + span {
+  outline: 2px solid var(--diary-accent);
+  outline-offset: 3px;
+}
+
+:host([data-sleepiness-level='6']) {
+  --diary-cloud: var(--diary-level-6-cloud);
+}
+
+:host([data-sleepiness-level='7']) {
+  --diary-cloud: var(--diary-level-7-cloud);
+}
+
+.rating-description {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-height: 100px;
+  margin: 0;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--diary-cloud, var(--diary-surface));
+  color: var(--diary-text);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.bottom-navigation {
+  display: flex;
+}
+
+.bottom-navigation button {
+  flex: 1;
+  min-width: 0;
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--diary-muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.bottom-navigation button.selected {
+  color: var(--diary-accent);
+  font-weight: 600;
+}
+
+.bottom-navigation button:focus-visible {
+  outline: 2px solid var(--diary-accent);
+  outline-offset: -4px;
+  border-radius: 8px;
+}
+
+.bottom-navigation ion-icon {
+  font-size: 24px;
+}
+
+ion-button,
+.logging-form > button,
+.bottom-navigation button,
+.rating-option span {
+  transition: transform 160ms ease-out, filter 160ms ease-out, background-color 160ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  ion-button:not([disabled]):hover,
+  .rating-option:hover span {
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+  }
+
+  .logging-form > button:not(:disabled):hover,
+  .bottom-navigation button:not(:disabled):hover {
+    background-color: color-mix(in srgb, var(--diary-accent) 10%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+ion-button:not([disabled]):active,
+.logging-form > button:not(:disabled):active,
+.bottom-navigation button:not(:disabled):active,
+.rating-option:active span {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ion-button,
+  .logging-form > button,
+  .bottom-navigation button,
+  .rating-option span {
+    transition: none;
+    transform: none !important;
+  }
+}

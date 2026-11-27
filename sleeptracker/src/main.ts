@@ -12,7 +12,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    provideIonicAngular({ mode: 'ios' }),
     importProvidersFrom(IonicStorageModule.forRoot()),
     provideRouter(routes, withPreloading(PreloadAllModules)),
   ],

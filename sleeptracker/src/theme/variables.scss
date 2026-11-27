@@ -1,2 +1,37 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+:root {
+  --ion-color-primary: #245fa6;
+  --ion-color-primary-rgb: 36, 95, 166;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #205492;
+  --ion-color-primary-tint: #3a6faf;
+
+  --diary-day-background: linear-gradient(160deg, #e4f1ff, #a9cdef);
+  --diary-day-surface: #eaf3ff;
+  --diary-day-text: #203650;
+  --diary-day-muted: #465f7c;
+  --diary-day-border: #9bbbdc;
+  --diary-day-error: #9e3345;
+  --diary-day-success: #216044;
+  --diary-night-background: linear-gradient(160deg, #09070f, #251632);
+  --diary-night-surface: #120d1c;
+  --diary-night-text: #f5efff;
+  --diary-night-muted: #c0b2d3;
+  --diary-night-border: #493755;
+  --diary-night-accent: #d8c2ff;
+  --diary-night-error: #ffadb7;
+  --diary-night-success: #9fddbc;
+
+  --diary-level-1-background: var(--diary-day-background);
+  --diary-level-2-background: linear-gradient(160deg, #cadcf5, #acbce7);
+  --diary-level-3-background: linear-gradient(160deg, #b5c2e6, #9ea0cd);
+  --diary-level-4-background: linear-gradient(160deg, #676b98, #4c3b6a);
+  --diary-level-5-background: linear-gradient(160deg, #4c3b6a, #2d1c41);
+  --diary-level-6-background: linear-gradient(160deg, #2d2340, #1f142c);
+  --diary-level-7-background: var(--diary-night-background);
+  --diary-level-6-cloud: #59466d;
+  --diary-level-7-cloud: #4b385e;
+}
